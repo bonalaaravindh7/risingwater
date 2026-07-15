@@ -37,11 +37,11 @@ Pandas · NumPy · Joblib · Gunicorn · Render (deployment)
 
 ## Setup
 ```bash
-git clone https://github.com/Laharisrikotipalli/RisingWaters.git
+git clone https://github.com/bonalaaravindh7/risingwater.git
 cd RisingWaters
 pip install -r requirements.txt
 python app.py
 ```
 
 ## Author
-**Lahari Sri Kotipalli** — B.Tech, Computer Science and Engineering
+**BONALA ARAVINDA VENKATA SAI** — B.Tech, Computer Science and Engineering
