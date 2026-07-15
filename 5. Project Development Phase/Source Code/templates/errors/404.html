@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found &middot; Flood Prediction</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body data-rain="light">
+
+<canvas id="rain-canvas"></canvas>
+<div class="lightning-flash"></div>
+
+{% include 'partials/nav.html' %}
+
+<div class="page">
+    <div class="panel">
+        <span class="status-icon">🧭</span>
+        <span class="eyebrow">404</span>
+        <h1 class="title-hero" style="font-size:32px;">Page Not Found</h1>
+        <p>That page doesn't exist, or may have moved.</p>
+        <a href="{{ url_for('home') }}">
+            <button class="btn" type="button">Back Home</button>
+        </a>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>

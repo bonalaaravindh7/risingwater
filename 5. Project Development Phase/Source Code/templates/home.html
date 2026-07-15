@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flood Prediction System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <style>
+        /* --- Extra weather effect layer: wind + ripples (self-contained) --- */
+        #weather-fx-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 2; /* above background clouds, below panel content */
+        }
+    </style>
+</head>
+<body data-rain="normal">
+
+<canvas id="rain-canvas"></canvas>
+<canvas id="weather-fx-canvas"></canvas>
+<div class="cloud-layer">
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+    <div class="cloud c3"></div>
+</div>
+<div class="lightning-flash"></div>
+
+{% include 'partials/nav.html' %}
+{% include 'partials/flash.html' %}
+
+<section class="hero-banner">
+    <div class="illo-frame">
+        <img src="{{ url_for('static', filename='hero-rain.png') }}" alt="Heavy rainfall over green foliage">
+        <div class="illo-overlay">
+            <span class="hero-eyebrow">Stormwatch &middot; Forecast Model</span>
+            <h1>Flood Prediction System</h1>
+        </div>
+    </div>
+    <div class="intro-copy">
+        <span class="eyebrow">Introduction</span>
+        <h2>Understanding flood forecasting</h2>
+        <p>
+            Flood forecasting uses historical rainfall and weather data to
+            estimate flood risk ahead of time, giving communities a lead time
+            that can range from a few hours to several days. It's a core part
+            of flood warning systems, where forecasting focuses on predicting
+            what will happen while warning focuses on turning that prediction
+            into a decision. This tool applies a machine-learning model trained
+            on regional rainfall and climate records to give you a fast, early
+            read on flood risk from a handful of local inputs.
+        </p>
+        <a href="/predict">
+            <button class="btn" type="button">
+                Start Prediction
+            </button>
+        </a>
+    </div>
+</section>
+
+<script src="{{ url_for('static', filename='main.js') }}"></script>
+
+<script>
+// -----------------------------------------------------------------------
+// Extra weather effect: drifting wind streaks + rain ripples.
+// Self-contained on its own canvas/layer so it doesn't touch or depend
+// on whatever main.js already does with #rain-canvas.
+// -----------------------------------------------------------------------
+(function () {
+    const canvas = document.getElementById('weather-fx-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    // ---- Wind streaks ----
+    const windLines = [];
+    const WIND_COUNT = 18;
+    for (let i = 0; i < WIND_COUNT; i++) {
+        windLines.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            len: 60 + Math.random() * 120,
+            speed: 2 + Math.random() * 4,
+            opacity: 0.05 + Math.random() * 0.12,
+        });
+    }
+
+    function drawWind() {
+        ctx.lineWidth = 1;
+        for (const w of windLines) {
+            ctx.strokeStyle = `rgba(180, 210, 230, ${w.opacity})`;
+            ctx.beginPath();
+            ctx.moveTo(w.x, w.y);
+            ctx.lineTo(w.x - w.len, w.y + w.len * 0.08);
+            ctx.stroke();
+
+            w.x += w.speed;
+            w.y += w.speed * 0.05;
+
+            if (w.x - w.len > canvas.width) {
+                w.x = -w.len;
+                w.y = Math.random() * canvas.height;
+            }
+        }
+    }
+
+    // ---- Rain ripples (randomly spawned "drop landed" rings) ----
+    const ripples = [];
+
+    function spawnRipple() {
+        ripples.push({
+            x: Math.random() * canvas.width,
+            y: canvas.height * (0.55 + Math.random() * 0.4), // lower part of screen, like a ground/water line
+            radius: 1,
+            maxRadius: 14 + Math.random() * 18,
+            opacity: 0.35,
+        });
+    }
+
+    // Spawn a new ripple every ~250ms
+    setInterval(spawnRipple, 250);
+
+    function drawRipples() {
+        for (let i = ripples.length - 1; i >= 0; i--) {
+            const r = ripples[i];
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(150, 200, 220, ${r.opacity})`;
+            ctx.lineWidth = 1.2;
+            ctx.ellipse(r.x, r.y, r.radius, r.radius * 0.35, 0, 0, Math.PI * 2);
+            ctx.stroke();
+
+            r.radius += 0.6;
+            r.opacity -= 0.012;
+
+            if (r.radius >= r.maxRadius || r.opacity <= 0) {
+                ripples.splice(i, 1);
+            }
+        }
+    }
+
+    function loop() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawWind();
+        drawRipples();
+        requestAnimationFrame(loop);
+    }
+    loop();
+})();
+</script>
+{% include 'partials/footer.html' %}
+</body>
+</html>

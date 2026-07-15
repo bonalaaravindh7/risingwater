@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flood Prediction</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body data-rain="light">
+
+<canvas id="rain-canvas"></canvas>
+<div class="cloud-layer">
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+</div>
+<div class="lightning-flash"></div>
+
+{% include 'partials/nav.html' %}
+{% include 'partials/flash.html' %}
+
+<div class="page">
+
+    <div class="panel wide">
+        <span class="eyebrow">Enter Readings</span>
+        <h2 class="title-hero" style="font-size:28px;">Weather &amp; Rainfall Details</h2>
+        <p style="margin-bottom:0;">Fill in each field with the local values for the period you want to assess.</p>
+
+        {% if not model_ready %}
+            <p style="color:var(--amber);">The prediction model isn't available right now, so this form is disabled.</p>
+        {% else %}
+        <form action="{{ url_for('predict') }}" method="POST" novalidate>
+            {{ form.hidden_tag() }}
+
+            <div class="section-label">Weather conditions</div>
+            <div class="field-grid">
+                <div class="field">
+                    {{ form.Temp.label }}
+                    {{ form.Temp(step="any", placeholder="Average Temperature") }}
+                    {% for error in form.Temp.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+                </div>
+                <div class="field">
+                    {{ form.Humidity.label }}
+                    {{ form.Humidity(step="any", placeholder="Humidity Percentage (%)") }}
+                    {% for error in form.Humidity.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+                </div>
+                <div class="field">
+                    {{ form.CloudCover.label }}
+                    {{ form.CloudCover(step="any", placeholder="Cloud Cover Percentage (%)") }}
+                    {% for error in form.CloudCover.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+                </div>
+            </div>
+
+            <div class="section-label">Rainfall totals</div>
+            <div class="field-grid">
+                <div class="field">
+                    {{ form.Annual.label }}
+                    {{ form.Annual(step="any", placeholder="Enter Annual Rain Fall in mm") }}
+                    {% for error in form.Annual.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+                </div>
+                <div class="field">
+                    {{ form.JanFeb.label }}
+                    {{ form.JanFeb(step="any", placeholder="Jan-Feb Rainfall in mm") }}
+                    {% for error in form.JanFeb.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+                </div>
+                <div class="field">
+                    {{ form.MarMay.label }}
+                    {{ form.MarMay(step="any", placeholder="March-May Rainfall in mm") }}
+                    {% for error in form.MarMay.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+                </div>
+                <div class="field">
+                    {{ form.JunSep.label }}
+                    {{ form.JunSep(step="any", placeholder="June-September Rainfall in mm") }}
+                    {% for error in form.JunSep.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+                </div>
+                <div class="field">
+                    {{ form.OctDec.label }}
+                    {{ form.OctDec(step="any", placeholder="Oct-Dec Rainfall in mm") }}
+                    {% for error in form.OctDec.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+                </div>
+                <div class="field">
+                    {{ form.AvgJune.label }}
+                    {{ form.AvgJune(step="any", placeholder="Average June Rainfall in mm") }}
+                    {% for error in form.AvgJune.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+                </div>
+            </div>
+
+            <div class="section-label">Sub-division rainfall</div>
+            <div class="field-grid">
+                <div class="field">
+                    {{ form.Sub.label }}
+                    {{ form.Sub(step="any", placeholder="Sub-division Rainfall in mm") }}
+                    {% for error in form.Sub.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+                </div>
+            </div>
+
+            <div class="form-footer">
+                <span class="hint">All fields required</span>
+                {{ form.submit(class_="btn") }}
+            </div>
+
+        </form>
+        {% endif %}
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='main.js') }}"></script>
+{% include 'partials/footer.html' %}
+</body>
+</html>

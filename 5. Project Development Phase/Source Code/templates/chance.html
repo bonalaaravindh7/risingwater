@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flood Prediction Result</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body data-rain="heavy">
+
+<canvas id="rain-canvas"></canvas>
+<div class="cloud-layer">
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+    <div class="cloud c3"></div>
+</div>
+<div class="lightning-flash"></div>
+
+{% include 'partials/nav.html' %}
+{% include 'partials/flash.html' %}
+
+<div class="page">
+
+    <div class="brand">
+        <span class="dot"></span>
+        Station&nbsp;07 &middot; Result
+    </div>
+
+    <div class="panel">
+        <span class="status-icon">⚠️</span>
+        <span class="eyebrow" style="color:var(--amber);">Assessment Complete</span>
+        <h1 class="title-hero" style="font-size:32px;">Flood Predicted</h1>
+
+        <div class="gauge-wrap" data-gauge data-risk="high" data-value="86">
+            <svg class="gauge" viewBox="0 0 260 150">
+                <path class="gauge-track" d="M 10 130 A 120 120 0 0 1 250 130" />
+                <path class="gauge-fill" d="M 10 130 A 120 120 0 0 1 250 130" />
+                <line class="gauge-needle" x1="130" y1="130" x2="130" y2="30" stroke="#E7F1F8" stroke-width="3" stroke-linecap="round" />
+                <circle class="gauge-center" cx="130" cy="130" r="6" />
+            </svg>
+            <div class="gauge-readout status-flood">
+                Risk level
+                <strong>High</strong>
+            </div>
+        </div>
+
+        <p>
+            The rainfall and weather values you entered fall into a range
+            the model associates with a high likelihood of flooding.
+            Treat this as an early indicator, not a certainty — check local
+            advisories for confirmed conditions.
+        </p>
+
+        <a href="/predict">
+            <button class="btn" type="button">Predict Again</button>
+        </a>
+
+        <div class="foot-note">Estimate based on entered parameters only</div>
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='main.js') }}"></script>
+{% include 'partials/footer.html' %}
+</body>
+</html>
