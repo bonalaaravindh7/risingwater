@@ -2,7 +2,7 @@
 
 A Machine Learning-based web application that predicts flood occurrence using historical weather and rainfall parameters. The project covers the full ML lifecycle — data preprocessing, model training, evaluation, model serialization, and deployment through a Flask web app.
 
-🔗 **Live App:** [https://risingwaters-1.onrender.com/](https://risingwaters-1.onrender.com/)
+🔗 **Live App:** https://chotuminu4.github.io/SummerProject/
 
 ---
 
@@ -223,7 +223,7 @@ The best-performing model was selected and saved as `floods.save`, with its corr
 
 ## Clone Repository
 ```bash
-git clone https://github.com/Laharisrikotipalli/RisingWaters.git
+git clone https://github.com/bonalaaravindh7/risingwater.git
 ```
 
 ## Navigate to the Source Code Folder
@@ -312,5 +312,5 @@ This project helped in understanding:
 
 # 👩‍💻 Author
 
-**Lahari Sri Kotipalli**
+**BONALA ARAVINDA VENKATA SAI**
 B.Tech – Computer Science and Engineering
