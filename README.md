@@ -30,10 +30,10 @@ Pandas · NumPy · Joblib · Gunicorn · Render (deployment)
 | `8. Project Demonstration` | Demo materials |
 
 ## Live Demo
-🔗 [risingwaters-1.onrender.com](https://risingwaters-1.onrender.com)
+🔗 https://chotuminu4.github.io/SummerProject/
 
 ## Demo Video
-🎥 [Watch the project walkthrough](https://drive.google.com/file/d/1mrpNulO4c-xLdWXaaDxH9CV9T5jWIXNK/view?usp=sharing)
+🎥 https://drive.google.com/file/d/1meilTYg1IyoTz31Gj5dd7kNhJen-nzi-/view?usp=sharing
 
 ## Setup
 ```bash
